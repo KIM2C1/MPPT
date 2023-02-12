@@ -10,7 +10,10 @@ try:
 
       time.sleep(1)
       y = ser.readline()
-      print("아두이노에서 받은 값:",y.decode('utf-8').strip())
+      for i in range(len(c)):
+        print("아두이노에서 받은 값:",y.decode('utf-8').strip())
+        time.sleep(2)
+        i += 1
 
 except KeyboardInterrupt:
     print("중지")
