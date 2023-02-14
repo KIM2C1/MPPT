@@ -1,7 +1,7 @@
 import serial
 import time
 import crc16
-
+# crc
 def crc16(data: str, poly: hex = 0xA001) -> str:
     '''
         CRC-16 MODBUS HASHING ALGORITHM
