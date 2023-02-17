@@ -10,13 +10,10 @@ def crc16_xmodem(data: bytes) -> int:
                 crc <<= 1
     return crc & 0xffff
 data2 = []
-data = 'QID'
+data = 'QVFW2'
 data1 = list(data)
 for j in range(len(data)) :
     data2.append(data1[j].encode('utf-8'))
-print(data2[0])
-print(data2[1])
-print(data2[2])
 
 data = data.encode('utf-8')
 crc = crc16_xmodem(data)
@@ -35,11 +32,3 @@ ser = serial.Serial(port = 'COM6', baudrate= 9600)
 ser.write(cr1_b)
 ser.write(cr2_b)
 ser.write(cr)
-a = b'\\xd6'
-#a = a.encode('utf-8')
-byte_str = b'\\xd6'
-decoded_byte_str = byte_str.decode('unicode_escape').encode('utf-8')
-print(decoded_byte_str)
-byte_literal = '\\xff\\xd8\\xff'
-byte_literal.decode('unicode_escape').encode('raw_unicode_escape')
-print(byte_literal)
