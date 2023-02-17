@@ -2,27 +2,27 @@ import serial
 import time
 import matplotlib
 import numpy
+
 #data sheet
 data_sheet = [
 "QID",
 "QSID",
-"QVFW",
-"QVFW2",
-"QPIRI",
-"QFLAG",
-"QPIGS",
-"QPGSn",
-"QMOD",
-"QPIWS",
-"QMCHGCR",
-"QMUCHGCR",
-"QOPM",
+#"QVFW",
+#"QVFW2",
+#"QPIRI",
+#"QFLAG",
+#"QPIGS",
+#"QPGSn",
+#"QMOD",
+#"QPIWS",
+#"QMCHGCR",
+#"QMUCHGCR",
+#"QOPM",
 ]
+
 ord_byte = []
 ord_byte1 = []
 crc_sum = []
-
-
 
 def crc16_xmodem(order: bytes) -> int:
     crc = 0
@@ -35,13 +35,15 @@ def crc16_xmodem(order: bytes) -> int:
                 crc <<= 1
     return crc & 0xffff
 
-ser = serial.Serial('COM6', 2400)
-
+#####################
 buff = []
 data_out = []
 buff_join_v1 = []
 buff_join_v2 = []
+count = 0
 find_end = 1
+#####################
+
 try_data = int(input("시행 횟수: "))
 
 
@@ -49,14 +51,15 @@ f = open("data_out.txt", 'w')
 f.write("\t---------------TEST START---------------\n")
 f.close()
 
-f = open("data_out.txt", 'a')
+
+ser = serial.Serial('COM11', 2400, write_timeout=3)
 
 for i in range(try_data):
+    
     for i in range(len(data_sheet)): #data_sheet의 수 만큼 반복.
 
-
-
-    
+        
+        ord_byte1 = []
         order = data_sheet[i]
         order_byte = order.encode('utf-8') # xmodem으로 바꿀 변수
         len_order = len(order)
@@ -79,19 +82,26 @@ for i in range(try_data):
 
 
         for y in range(len(ord_byte1)) :
-            ser.write(ord_byte1[y])
+            ser.write(ord_byte1[y])  #보내는 값
             print(ord_byte1[y])
 
-        while (find_end): #읽은 데이터 만큼 밤복
+##########################################################################
+        buff = []
+        buff_join_v1 = []
 
-            buff_join = []
-            data = ser.read()
-            print(data)
-            buff.append(data)
+        while (True): #읽은 데이터 만큼 반복
+            try:
+                data = ser.read()
+                if data:
+                    print("받은값:", data)
+                    print("배열값", buff)
+                    buff.append(data)
+            except serial.SerialTimeoutException():
+                print("time out")
+                break
 
-            if (data == b'\r'):
-                find_end = 0
-
+    print("다음****************")
+"""
         #buff_join = ' '.join(i for i in buff)
         for n in range (len(buff)):
             buff_join_v1 += str(buff[n])
@@ -102,16 +112,22 @@ for i in range(try_data):
     
     #txt에 저장
     for i in range(len(data_out)):
+        f = open("data_out.txt", 'a')
+        
+        sample_2 = ''
+        sample = str(data_out[i])
 
-        sample_2=''
-        sample = str(i+1) + ": " + data_out[i] + "\n"
         sample_1 = sample.replace("b ","")
         sample_2 = sample_1.replace("'","")
-        print(sample_2)
-        print(type(sample_2))
-        f.write(sample_2)
+        sample_3 = str(i+1) + ": " + sample_2 + "\n"
 
-        line = "\t---------------" + " complete" + "---------------" + '\n'
-        f.write(line)
+        f.write(sample_3)
+        f.close()
+
+    f = open("data_out.txt", 'a')
+    line = "\t---------------" + " complete" + "---------------" + '\n'
+    f.write(line)
+    f.close()
 
 f.close()
+"""
