@@ -194,7 +194,8 @@ elif modetype == 'Q':
                 break
            else:
                 data_out = send_command(command)
-                
+
+
                 log_time = date.datetime.now()
                 print(log_time)
                 worksheet.write(xlsx_number, 0, command)
