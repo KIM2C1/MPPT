@@ -3,6 +3,7 @@
 MPPT Logging App
 
 ## Getting Started
+## 각 폴더 설명
 1. 파일 복제가 아닌 코드를 복제하여 자신의 프로젝트로 옮기기
    (Flutter 버전 차이로 인한 오류가 있기때문)
    
