@@ -1,16 +1,15 @@
 # deu_mppt
 
-"A new Flutter project."
+MPPT Logging App
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 각 폴더 설명
+1. 파일 복제가 아닌 코드를 복제하여 자신의 프로젝트로 옮기기
+   (Flutter 버전 차이로 인한 오류가 있기때문)
+   
+2. origin -> Flutter_blue_plus 기본 예제 코드
+3. provide -> provide 관련 클래스 기능별 분류
+4. screen -> 화면에 그려질 UI 모음
+5. shared -> 모든 화면에서 공통적으로 사용할 소스
+   ex) : 메뉴 상단바
+6. main -> permission 권한 및 페이지 routes 기능만 제공
