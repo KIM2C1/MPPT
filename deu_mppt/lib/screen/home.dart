@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:deu_mppt/shared/menu_top.dart';
+import 'package:deu_mppt/provide/xvalue.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -94,10 +98,13 @@ class DataTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHight = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsets.all(10),
       height: height,
-      width: width,
+      //width: width,
+      width: screenHight.width * 0.92 / 2,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
@@ -164,10 +171,14 @@ class TotalOutputBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHight = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsets.all(10),
       height: 50,
-      width: 340,
+      //width: 340,
+      //height: screenHight.height * screenHight.aspectRatio * 0.14,
+      width: screenHight.width * 0.93,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
@@ -231,10 +242,14 @@ class _BatteryTableState extends State<BatteryTable> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHight = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsets.all(10),
-      height: 233,
-      width: 340,
+      height: screenHight.width >= 200 ? 275 : screenHight.height * 0.28,
+      width: screenHight.width * 0.93,
+      /* height: 233,
+      width: 340, */
       decoration: BoxDecoration(
         color: Colors.white,
         //color: const Color(0xFF8BD2FC),
@@ -255,7 +270,8 @@ class _BatteryTableState extends State<BatteryTable> {
             flex: 8,
             child: Column(
               children: [
-                Row(
+                const SizedBox(height: 10),
+                /* Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     if (value < 16)
@@ -270,14 +286,19 @@ class _BatteryTableState extends State<BatteryTable> {
                       color: Colors.green,
                     ),
                   ],
-                ),
+                ), */
                 Container(
-                  height: 140,
-                  width: 140,
+                  //height: 188,
+                  //width: 220,
+                  height:
+                      screenHight.width >= 200 ? 230 : screenHight.height * 0.2,
+                  //height: screenHight.height * 0.2,
+                  width: screenHight.width * 0.67,
                   decoration: const BoxDecoration(color: Colors.white),
-                  child: CircularGraph(value: value),
+                  child: const LineChartSample10(),
+                  //child: CircularGraph(value: value),
                 ),
-                Slider(
+                /* Slider(
                   value: value,
                   min: 0,
                   max: 100,
@@ -287,12 +308,15 @@ class _BatteryTableState extends State<BatteryTable> {
                       value = newValue;
                     });
                   },
-                ),
+                ), */
               ],
             ),
           ),
-          const VerticalDivider(
-            width: 10,
+          const Expanded(
+            flex: 1,
+            child: VerticalDivider(
+              width: 10,
+            ),
           ),
           const Expanded(
             flex: 2,
@@ -417,5 +441,135 @@ class _CircularGraphState extends State<CircularGraph> {
         ),
       ),
     );
+  }
+}
+
+class LineChartSample10 extends StatefulWidget {
+  const LineChartSample10({Key? key}) : super(key: key);
+
+  @override
+  State<LineChartSample10> createState() => _LineChartSample10State();
+}
+
+class _LineChartSample10State extends State<LineChartSample10> {
+  final limitCount = 200;
+  final sinPoints = <FlSpot>[];
+  final cosPoints = <FlSpot>[];
+
+  double xValue = 0;
+  double step = 0.05;
+
+  late Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    final xValueProvider = Provider.of<XValueProvider>(context, listen: false);
+
+    timer = Timer.periodic(const Duration(milliseconds: 40), (timer) {
+      while (sinPoints.length > limitCount) {
+        sinPoints.removeAt(0);
+        cosPoints.removeAt(0);
+      }
+
+      // Get the xValue from the provider
+      xValue = xValueProvider.xValue;
+
+      setState(() {
+        // Add data points based on xValue received from the provider
+        sinPoints.add(FlSpot(xValue, sin(xValue)));
+        cosPoints.add(FlSpot(xValue, cos(xValue)));
+        //sinPoints.add(FlSpot(xValue, 0.8));
+        //cosPoints.add(FlSpot(xValue, 0.4));
+      });
+
+      xValue += step;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<XValueProvider>(
+      builder: (context, xValueProvider, child) {
+        // Access xValue from the provider
+        xValue = xValueProvider.xValue;
+
+        return cosPoints.isNotEmpty
+            ? AspectRatio(
+                aspectRatio: 1.5,
+                child: LineChart(
+                  LineChartData(
+                      minY: -1,
+                      maxY: 1,
+                      minX: sinPoints.first.x,
+                      maxX: sinPoints.last.x,
+                      lineTouchData: const LineTouchData(enabled: true),
+                      clipData: const FlClipData.all(),
+                      gridData: const FlGridData(
+                        show: true,
+                        drawVerticalLine: true,
+                      ),
+                      borderData: FlBorderData(show: true),
+                      lineBarsData: [
+                        sinLine(sinPoints),
+                        cosLine(cosPoints),
+                      ],
+                      titlesData: const FlTitlesData(
+                        show: true,
+                        topTitles: AxisTitles(
+                          sideTitles: SideTitles(reservedSize: 0),
+                        ),
+                        rightTitles: AxisTitles(
+                          sideTitles: SideTitles(reservedSize: 0),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(reservedSize: 0),
+                        ),
+                      )
+                      /* titlesData: const FlTitlesData(
+                      show: true,
+                    ), */
+                      ),
+                ),
+              )
+            : Container();
+      },
+    );
+  }
+
+  LineChartBarData sinLine(List<FlSpot> points) {
+    return LineChartBarData(
+      spots: points,
+      dotData: const FlDotData(
+        show: false,
+      ),
+      gradient: const LinearGradient(
+        colors: [Colors.black, Colors.red],
+        stops: [0.1, 1.0],
+      ),
+      barWidth: 4,
+      isCurved: false,
+    );
+  }
+
+  LineChartBarData cosLine(List<FlSpot> points) {
+    return LineChartBarData(
+      spots: points,
+      dotData: const FlDotData(
+        show: false,
+      ),
+      gradient: const LinearGradient(
+        colors: [Colors.black, Colors.black],
+        stops: [0.1, 1.0],
+      ),
+      barWidth: 4,
+      isCurved: false,
+    );
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

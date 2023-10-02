@@ -75,12 +75,18 @@ class Popbutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void handleMenuItemClick(String value, BuildContext context) {
+      String? currentPage = ModalRoute.of(context)?.settings.name;
+
       switch (value) {
         case '1':
-          Navigator.of(context).pushNamed('/device2');
+          if (currentPage != '/device2') {
+            Navigator.of(context).pushNamed('/device2');
+          }
           break;
         case '2':
-          Navigator.of(context).pushNamed('/setting');
+          if (currentPage != '/setting') {
+            Navigator.of(context).pushNamed('/setting');
+          }
           break;
       }
     }

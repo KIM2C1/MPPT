@@ -1,6 +1,7 @@
 /*플러터 기본 라이브러리*/
 import 'dart:io';
 import 'dart:async';
+import 'package:deu_mppt/provide/xvalue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,7 +20,6 @@ import 'package:deu_mppt/screen/find_device.dart';
 import 'package:deu_mppt/screen/setting.dart';
 import 'package:deu_mppt/orgin/ble_main.dart';
 
-import 'package:deu_mppt/provide/provider_ex.dart';
 import 'package:deu_mppt/provide/result.dart';
 import 'package:deu_mppt/provide/data.dart';
 
@@ -40,10 +40,10 @@ void main() {
         runApp(
           MultiProvider(
             providers: [
-              ChangeNotifierProvider(create: (_) => DeviceProvider()),
               ChangeNotifierProvider(create: (_) => ResultProvider()),
               ChangeNotifierProvider(create: (_) => BluetoothData()),
               ChangeNotifierProvider(create: (_) => DeviceId()),
+              ChangeNotifierProvider(create: (_) => XValueProvider()),
             ],
             child: const LoginApp(),
           ),
@@ -54,10 +54,10 @@ void main() {
     runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => DeviceProvider()),
           ChangeNotifierProvider(create: (_) => ResultProvider()),
           ChangeNotifierProvider(create: (_) => BluetoothData()),
           ChangeNotifierProvider(create: (_) => DeviceId()),
+          ChangeNotifierProvider(create: (_) => XValueProvider()),
         ],
         child: const LoginApp(),
       ),
@@ -96,6 +96,7 @@ class LoginApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

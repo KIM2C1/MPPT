@@ -247,13 +247,15 @@ class _DeviceScreenState extends State<DeviceScreen> {
 
   late BluetoothCharacteristic myc;
 
+  bool isConnecting = false;
+
   Future<bool> connect() async {
     Future<bool>? returnValue;
     setState(() {
       stateText = 'Connecting';
     });
     await widget.device
-        .connect(autoConnect: false)
+        .connect(autoConnect: true)
         .timeout(const Duration(milliseconds: 15000), onTimeout: () {
       //타임아웃 발생
       //returnValue를 false로 설정
@@ -313,6 +315,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                   await c.setNotifyValue(true);
                   await Future.delayed(const Duration(milliseconds: 200));
                   await widget.device.requestMtu(200);
+
                   c.value.listen(
                     (value) {
                       //print("RECIVE : $value");
@@ -331,11 +334,16 @@ class _DeviceScreenState extends State<DeviceScreen> {
           }
         }
         try {
+          print(isConnecting);
+          isConnecting = true;
+          print(isConnecting);
           Timer.periodic(
-            const Duration(seconds: 1),
+            const Duration(seconds: 10),
             (timer) async {
-              await myc.write([0x23, 0x52, 0x45, 0x51, 0x30, 0x31, 0x40],
-                  withoutResponse: myc.properties.writeWithoutResponse);
+              if (isConnecting) {
+                await myc.write([0x23, 0x52, 0x45, 0x51, 0x30, 0x31, 0x40],
+                    withoutResponse: myc.properties.writeWithoutResponse);
+              }
             },
           );
         } catch (e) {}
@@ -366,10 +374,18 @@ class _DeviceScreenState extends State<DeviceScreen> {
         content: const Text('연결이 완료 되었습니다!'),
         actions: <Widget>[
           TextButton(
-            child: const Text("OK"),
-            onPressed: () {
+            onPressed: isConnecting
+                ? null
+                : () async {
+                    Navigator.of(context).pop();
+                  },
+            child: Text(
+              "OK",
+              style: TextStyle(color: isConnecting ? Colors.red : Colors.black),
+            ),
+            /* onPressed: () {
               Navigator.of(context).pop();
-            },
+            }, */
           ),
         ],
       ),

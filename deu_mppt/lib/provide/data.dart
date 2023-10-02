@@ -57,7 +57,7 @@ class BluetoothData with ChangeNotifier {
       //받은 데이터의 길이를 알기 위해서
       bytes = Uint8List.fromList(additionalData);
       ByteData byteData = ByteData.sublistView(bytes);
-      const int byteLength = 172;
+      const int byteLength = 200;
 
       //Create XOR Check Sum
       int calculateChecksum8Mod256(List<int> data) {
@@ -77,7 +77,7 @@ class BluetoothData with ChangeNotifier {
       //Add value to buffer
       if ((buffer.length < byteLength) && (additionalData != null)) {
         buffer.addAll(additionalData);
-        if (buffer.length <= 44) {
+        if (buffer.length <= 96) {
           buffer = [];
         }
 
