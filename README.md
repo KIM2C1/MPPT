@@ -32,7 +32,7 @@
 
 ## **🛠 기능**
 
-### HC06을 통한 Bluetooth 연결 (데이터 송수신 실험)
+### 아두이노 HC06을 통한 Bluetooth 연결 (데이터 송수신 실험)
 <div align="left">
         <img width="250" src="https://github.com/KIM2C1/MPPT/assets/76949032/8404c6e0-9e5a-4e79-9d32-c94edb51b7d5">
 </div>
@@ -76,4 +76,62 @@ int byteintTen = 10 * decodeBytedata.getInt8(60+i); // Index[61-196] 1바이트 
 int byteintOne = decodeBytedata.getInt8(61+i); // Index[61-196] 1바이트 디코드(1의 자리)
 int byteint = byteintTen + byteintOne;
 float bytefloat = byteint / 10; // 소수일 경우
+```
+
+
+### 실시간 그래프 기능(전압, 전류, 전력, 배터리 용량)
+```dart
+class GraphTile extends StatelessWidget {
+  const GraphTile({
+    required this.tiltle,
+    super.key,
+  });
+
+  final String tiltle;
+
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
+    return Container(
+      padding: const EdgeInsets.all(10),
+      height: 265,
+      //width: 340,
+      width: screenSize.width * 0.9,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.4),
+            blurRadius: 5.0,
+            spreadRadius: 0.0,
+            offset: const Offset(0, 3),
+          )
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                tiltle,
+                style: const TextStyle(
+                  //fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 200,
+            width: screenSize.width * 0.8,
+            child: const LineChartSample10(),
+          ),
+        ],
+      ),
+    );
+  }
+}
 ```
