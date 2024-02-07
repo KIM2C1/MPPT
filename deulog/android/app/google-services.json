@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "153285982980",
+    "firebase_url": "https://deu-mppt-logging-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "deu-mppt-logging",
+    "storage_bucket": "deu-mppt-logging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153285982980:android:20f1d05a2d934218d9ee51",
+        "android_client_info": {
+          "package_name": "com.example.deulog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9QQx-z4LX8p2A4jc60rgkB-_4tnGJ0UA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
