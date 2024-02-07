@@ -30,12 +30,22 @@
 </details>
 
 ## **🔍 동작이미지**
+<div align="left">
+        <img width="240" src="https://github.com/KIM2C1/MPPT/assets/76949032/0bad6370-34ea-4709-b09c-7e6d9922ac2d">
+        <img width="240" src="https://github.com/KIM2C1/MPPT/assets/76949032/2eb03a4a-bfef-4141-809d-f3ab2c90af3c">
+        <img width="240" src="https://github.com/KIM2C1/MPPT/assets/76949032/b1574a92-7e25-4e50-b212-324c3aeef2b4">
+        <img width="240" src="https://github.com/KIM2C1/MPPT/assets/76949032/b79c284a-3f0c-4b18-a4fb-2dbca34a9d5c">
+        
+
+</div>
 
 ## **🛠 기능**
 
 ### 아두이노 HC06을 통한 Bluetooth 연결 (데이터 송수신 실험)
 <div align="left">
         <img width="250" src="https://github.com/KIM2C1/MPPT/assets/76949032/8404c6e0-9e5a-4e79-9d32-c94edb51b7d5">
+        <img width="250" src="https://github.com/KIM2C1/MPPT/assets/76949032/8404c6e0-9e5a-4e79-9d32-c94edb51b7d5">
+        
 </div>
 
 ### MPPT로부터 받은 데이터[200]
@@ -71,66 +81,7 @@
 - Index[198] : '\r'
 - Index[199] : '\n'
 
-```dart
-str result += String.fromCharCodes(strchar); // Index[0-60] ASCII로 해석
-int byteintTen = 10 * decodeBytedata.getInt8(60+i); // Index[61-196] 1바이트 디코드(10의 자리)
-int byteintOne = decodeBytedata.getInt8(61+i); // Index[61-196] 1바이트 디코드(1의 자리)
-int byteint = byteintTen + byteintOne;
-float bytefloat = byteint / 10; // 소수일 경우
-```
 
-
-### 실시간 그래프 기능(전압, 전류, 전력, 배터리 용량)
-```dart
-class GraphTile extends StatelessWidget {
-  const GraphTile({
-    required this.tiltle,
-    super.key,
-  });
-
-  final String tiltle;
-
-  @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-
-    return Container(
-      padding: const EdgeInsets.all(10),
-      height: 265,
-      //width: 340,
-      width: screenSize.width * 0.9,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.4),
-            blurRadius: 5.0,
-            spreadRadius: 0.0,
-            offset: const Offset(0, 3),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                tiltle,
-                style: const TextStyle(
-                  //fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: 200,
-            width: screenSize.width * 0.8,
-            child: const LineChartSample10(),
-          ),
-        ],
       ),
     );
   }
