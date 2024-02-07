@@ -44,7 +44,6 @@
 ### 아두이노 HC06을 통한 Bluetooth 연결 (데이터 송수신 실험)
 <div align="left">
         <img width="250" src="https://github.com/KIM2C1/MPPT/assets/76949032/8404c6e0-9e5a-4e79-9d32-c94edb51b7d5">
-        <img width="250" src="https://github.com/KIM2C1/MPPT/assets/76949032/8404c6e0-9e5a-4e79-9d32-c94edb51b7d5">
         
 </div>
 
