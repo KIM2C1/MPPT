@@ -4,7 +4,7 @@
 </div>
 
 <div align="center">
-    <h1>  ⚡MPPT Management Application(진행중)⚡ </h1>
+    <h1>  ⚡MPPT Management Application⚡ </h1>
 </div>
 
 ## ✒️ : 목차
